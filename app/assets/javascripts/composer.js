@@ -7,6 +7,15 @@ $.TweetCompose = function(el) {
   this.$el.on("click", "a.add-mentioned-user", function(event) {
     that.addMentionedUser(event);
   });
+  this.$el.on("click", "a.remove-mentioned-user", function(event){
+    that.removeMentionedUser(event);
+  });
+};
+
+$.TweetCompose.prototype.removeMentionedUser = function (event) {
+  event.preventDefault();
+  var $parentBox = $(event.currentTarget).closest(".mention-box");
+  $parentBox.remove();
 };
 
 $.TweetCompose.prototype.handleSubmit = function (event) {
@@ -36,8 +45,14 @@ $.TweetCompose.prototype.handleSubmit = function (event) {
       console.log(that.makeTemplate(data));
       var newentry = that.makeTemplate(data);
       $list.prepend(newentry);
+      that.clearInput();
     }
   });
+};
+
+$.TweetCompose.prototype.clearInput = function () {
+  this.$el.find("ul.mentioned-users").empty();
+  this.$el.find(".tweet-content").val("");
 };
 
 $.TweetCompose.prototype.addMentionedUser = function (event) {

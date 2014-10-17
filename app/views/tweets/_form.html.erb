@@ -15,12 +15,18 @@
     <a href="javascript:void(0)" class="add-mentioned-user">Add mention</a>
     <ul class="mentioned-users"></ul>
     <script type="text/template" class="mention-menu">
-      <select class="tweet-mention" name="tweet[mentioned_user_ids][]">
-        <option></option>
-        <% User.all.each do |user| %>
-          <option value="<%= user.id %>"><%= user.username %></option>
-        <% end %>
-      </select>
+
+      <div class="mention-box">
+        <a href="javascript:void(0)"
+          class="remove-mentioned-user">Remove mention</a>
+        <select class="tweet-mention" name="tweet[mentioned_user_ids][]">
+          <option></option>
+          <% User.all.each do |user| %>
+            <option value="<%= user.id %>"><%= user.username %></option>
+          <% end %>
+        </select>
+      </div>
+
     </script>
   </label>
   <br>

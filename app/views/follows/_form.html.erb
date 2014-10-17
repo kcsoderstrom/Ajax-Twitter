@@ -1,0 +1,87 @@
+<form method="POST" action="<%= user_follow_url(user) %>">
+  <input type="hidden"
+        name="authenticity_token"
+        value="<%= form_authenticity_token %>">
+  <% if current_user.follows?(user) %>
+    <input type="hidden" name="_method" value="DELETE" id="delete-tag">
+  <% end %>
+  <button type="submit"
+          class="follow-toggle"
+          data-user-id="<%= user.id %>"
+          data-initial-follow-state="<%=
+            current_user.follows?(user) ? 'followed' : 'unfollowed' %>">
+  </button>
+</form>
+
+
+<script>
+  $.FollowToggle = function (el) {
+    this.$el = $(el);
+    this.userId = this.$el.data("user-id");
+    this.followState = this.$el.data("initial-follow-state");
+    this.render();
+    var that = this;
+    this.$el.on("click", function(event) {
+      that.handleClick.call(that, event);
+    });
+  };
+
+  $.FollowToggle.prototype.render = function() {
+    if (this.followState === 'followed') {
+      this.$el.html("Unfollow!");
+    } else if (this.followState === 'unfollowed') {
+      this.$el.html("Follow!");
+    }
+  };
+
+  $.FollowToggle.prototype.handleClick = function(event) {
+    event.preventDefault();
+
+    this.$el.prop("disabled", true);
+    var url = this.$el.closest("form").attr("action");
+    var type;
+    var that = this;
+
+    if ( this.followState === 'followed' ) {
+      type = "DELETE";
+      this.followState = "unfollowing";
+    } else {
+      type = "POST";
+      this.followState = "following";
+    }
+
+    $.ajax({
+      dataType: 'json',
+      url: url,
+      type: type,
+      success: function(data) {
+        that.toggleFollowState();
+        that.$el.data("follow-state", that.followState);
+        that.render();
+        that.$el.prop("disabled", false);
+      }
+    });
+  };
+
+  $.FollowToggle.prototype.toggleFollowState = function () {
+    if(this.followState === "unfollowing") {
+      this.followState = "unfollowed";
+    } else if (this.followState === "following") {
+      this.followState = "followed";
+    }
+  };
+
+  $.FollowToggle.prototype.method1 = function () {
+    // ...
+  };
+
+  $.fn.followToggle = function () {
+    return this.each(function () {
+      new $.FollowToggle(this);
+    });
+  };
+
+  $(function () {
+    $("button.follow-toggle").followToggle();
+  });
+</script>

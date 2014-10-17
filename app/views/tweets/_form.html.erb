@@ -1,5 +1,5 @@
 <h2>New Tweet!</h2>
-<form action="/tweets" method="POST">
+<form action="/tweets" method="POST" class="tweet-compose">
   <input
       type="hidden"
       name="authenticity_token"
@@ -7,18 +7,21 @@
 
   <label>
     Content
-    <textarea name="tweet[content]"></textarea>
+    <textarea class="tweet-content" name="tweet[content]"></textarea>
   </label>
   <br>
 
   <label>
-    Mention
-    <select name="tweet[mentioned_user_ids][]">
-      <option></option>
-      <% User.all.each do |user| %>
-        <option value="<%= user.id %>"><%= user.username %></option>
-      <% end %>
-    </select>
+    <a href="javascript:void(0)" class="add-mentioned-user">Add mention</a>
+    <ul class="mentioned-users"></ul>
+    <script type="text/template" class="mention-menu">
+      <select class="tweet-mention" name="tweet[mentioned_user_ids][]">
+        <option></option>
+        <% User.all.each do |user| %>
+          <option value="<%= user.id %>"><%= user.username %></option>
+        <% end %>
+      </select>
+    </script>
   </label>
   <br>
 

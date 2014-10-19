@@ -27,13 +27,10 @@ $.TweetCompose.prototype.handleSubmit = function (event) {
   var mentions = $form.find(".tweet-mention");
   var url = $form.attr("action");
   var data = { content: content, mentioned_user_ids: [] };
-  console.log(data);
   for (var i = 0; i < mentions.length; i++) {
     var foo = $(mentions[i]).val();
-    console.log(foo);
     data.mentioned_user_ids.push(foo);
   }
-  console.log(data);
   var $list = $('.tweet-list');
 
   $.ajax({
@@ -42,7 +39,6 @@ $.TweetCompose.prototype.handleSubmit = function (event) {
     data: { tweet: data },
     dataType: 'JSON',
     success: function(data) {
-      console.log(that.makeTemplate(data));
       var newentry = that.makeTemplate(data);
       $list.prepend(newentry);
       that.clearInput();

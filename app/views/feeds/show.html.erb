@@ -1,10 +1,11 @@
 <h1>Welcome <%= current_user.username %>!</h1>
 
 <b>Your Feed!</b>
-<ul class="tweet-list">
-  <% @feed_tweets.each do |tweet| %>
-    <li><%= render "tweets/tweet", tweet: tweet %></li>
-  <% end %>
-</ul>
+<section class="infinite-tweets" data-all-the-tweets="<%= @feed_tweets %>">
+<!-- that is really dumb -->
+  <ul class="tweet-list">
+  </ul>
+  <a href="javascript:void(0)" class="fetch-more">Fetch more</a>
+</section>
 
 <%= render "tweets/form" %>
